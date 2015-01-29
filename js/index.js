@@ -1,108 +1,84 @@
-// Petición AJAX con jQuery
 "use strict";
 
 (function() {
 
-  // Namespace
-  var weatherApp = {};
+  // -- Constantes -------------------------------------------------------------
 
-  weatherApp.pais;
-  weatherApp.ciudad;
-  weatherApp.forecastData = {};
-  weatherApp.hourlyData = {};
-  weatherApp.t;
-  weatherApp.clone;
+  var API_KEY = "80114c7878f599621184a687fc500a12";
+  var API_WEATHER_URL = "http://api.openweathermap.org/data/2.5/weather?APPID=" + API_KEY + "&";
+  var API_FORECAST_URL = "http://api.openweathermap.org/data/2.5/forecast?APPID=" + API_KEY + "&";
+  var IMG_WEATHER = "http://openweathermap.org/img/w/";
 
-  // En el modo "strict" declaramos las funciones al principio
+  // -- Variables --------------------------------------------------------------
 
-  function errorGeolocalizando(error) {
+  var cityWeather = {};
+  cityWeather.zone;
+  cityWeather.icon;
+  cityWeather.temp;
+  cityWeather.temp_max;
+  cityWeather.temp_min;
+  cityWeather.sunrise;
+  cityWeather.sundown;
+  cityWeather.description;
+  cityWeather.main;
+
+  // -- Funciones --------------------------------------------------------------
+
+  function onLoad() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(getCoords, errorFound);
+    } else {
+      alert("Tu navegador no soporta GeoLocation");
+    }
+  };
+
+  function errorFound(error) {
     alert('Un error ocurrió: ' + error.code);
     // El código de error puede ser:
     // 0: Error desconocido
     // 1: Permiso spodenegado
     // 2: Posición no disponible
     // 3: Timeout
-  }
+  };
 
-  function posicionEncontrada(position) {
+  function getCoords(position) {
     var lat = position.coords.latitude;
     var lon = position.coords.longitude;
-    $.getJSON("http://api.wunderground.com/api/595a3b8f36177305/geolookup/q/" + lat + "," + lon + ".json", initApp);
+    $.getJSON(API_WEATHER_URL + "lat=" + lat + "&lon=" + lon, getCurrentWeather);
   }
 
-  function initApp(data) {
-    console.log(data);
-    weatherApp.pais = data.location.country_name;
-    weatherApp.ciudad = data.location.city;
-    // Petición AJAX al API de Weather para pedir los datos del clima
-    // de la ciudad en la que nos ha geolocalizado el navegador.
+  function getCurrentWeather(data) {
+    cityWeather.zone        = data.name;
+    cityWeather.icon        = IMG_WEATHER + data.weather[0].icon + ".png";
+    cityWeather.temp        = data.main.temp - 273.15;
+    cityWeather.temp_max    = data.main.temp_max - 273.15;
+    cityWeather.temp_min    = data.main.temp_min - 273.15;
+    cityWeather.sunrise     = data.sys.sunrise;
+    cityWeather.sunset      = data.sys.sunset;
+    cityWeather.description = data.weather[0].description;
+    cityWeather.main        = data.weather[0].main;
 
-    // Ésta es otra forma de hacerlo, como $.getJSON()
-    $.ajax({
-      dataType: "jsonp",
-      url: "http://api.wunderground.com/api/595a3b8f36177305/forecast/q/"+ weatherApp.pais +"/"+ weatherApp.ciudad +".json",
-      context: document.body
-    }).done(getCurrentTemperature);
+    renderTemplate();
   }
 
-  function getCurrentTemperature(data) {
-    console.log(data);
-    weatherApp.forecastData = data;
-
-    $.ajax({
-      dataType: "jsonp",
-      url: "http://api.wunderground.com/api/595a3b8f36177305/hourly/q/"+ weatherApp.pais +"/"+ weatherApp.ciudad +".json",
-      context: document.body
-    }).done(renderTemplate);
-  }
-
-  function renderTemplate(data) {
-    weatherApp.hourlyData = data;
-
+  function renderTemplate() {
     // Activar el template
-    weatherApp.t = document.querySelector("#plantilla");
-    weatherApp.clone = document.importNode(weatherApp.t.content, true);
-
+    var t = document.querySelector("#plantilla");
+    var clone = document.importNode(t.content, true);
     // Pinta los datos
-    var temperaturaHoy = weatherApp.hourlyData.hourly_forecast[0].temp.metric;
-    var descripcion = weatherApp.forecastData.forecast.txt_forecast.forecastday[0].fcttext_metric;
-    var climaHoy = weatherApp.forecastData.forecast.simpleforecast.forecastday[0];
+    clone.querySelector(".nombreCiudad").innerHTML      = cityWeather.zone;
+    clone.querySelector(".weatherImagen").src           = cityWeather.icon;
+    clone.querySelector(".tempMin").innerHTML           = cityWeather.temp_max;
+    clone.querySelector(".tempMax").innerHTML           = cityWeather.temp_min;
+    clone.querySelector(".descripcionClima").innerHTML  = cityWeather.description;
+    clone.querySelector(".temperaturaHoy").innerHTML    = cityWeather.temp + "º C.";
 
-    var iconoTiempo = climaHoy.icon_url;
-    var textoTiempo = climaHoy.conditions;
-    var temperaturaMinima = climaHoy.low.celsius;
-    var temperaturaMaxima = climaHoy.high.celsius;
-    var fechaActual = {
-      semana: climaHoy.date.weekday,
-      dia: climaHoy.date.day,
-      mes: climaHoy.date.monthname,
-      ano: climaHoy.date.year
-    };
-
-    weatherApp.clone.querySelector(".nombreCiudad").innerHTML = weatherApp.ciudad + ", " + weatherApp.pais;
-    weatherApp.clone.querySelector(".weatherImagen").src = iconoTiempo;
-    weatherApp.clone.querySelector(".tempMin").innerHTML = temperaturaMinima;
-    weatherApp.clone.querySelector(".tempMax").innerHTML = temperaturaMaxima;
-    weatherApp.clone.querySelector(".descripcionClima").innerHTML = descripcion;
-    weatherApp.clone.querySelector(".fechaSemana").innerHTML = fechaActual.semana + ", " + fechaActual.dia + " " + fechaActual.mes + " of " + fechaActual.ano;
-    weatherApp.clone.querySelector(".temperaturaHoy").innerHTML = temperaturaHoy + "º C.";
-
-    document.body.appendChild(weatherApp.clone);
+    $(".loader").hide();
+    document.body.appendChild(clone);
   }
 
-  function onLoad() {
-    // Geolocaliza tu ciudad
-    if (navigator.geolocation) {
-      //habría que ejecutar window.onload, pero con el closure, no hace falta
-      navigator.geolocation.getCurrentPosition(posicionEncontrada, errorGeolocalizando);
-    } else {
-      alert('Tu navegador no soporta Geolocation :(');
-    }
-  }
+  // -- Inicia la aplicación ---------------------------------------------------
 
   onLoad();
-
-
-
 
 })();
