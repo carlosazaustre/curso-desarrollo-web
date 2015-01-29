@@ -74,7 +74,7 @@
     clone.querySelector(".temperaturaHoy").innerHTML    = cityWeather.temp + "º C.";
 
     $(".loader").hide();
-    document.body.appendChild(clone);
+    $("body").append(clone);
   }
 
   // -- Inicia la aplicación ---------------------------------------------------
