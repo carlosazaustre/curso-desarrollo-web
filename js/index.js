@@ -79,6 +79,7 @@
       ano: climaHoy.date.year
     };
 
+    weatherApp.clone.querySelector(".nombreCiudad").innerHTML = weatherApp.ciudad + ", " + weatherApp.pais;
     weatherApp.clone.querySelector(".weatherImagen").src = iconoTiempo;
     weatherApp.clone.querySelector(".tempMin").innerHTML = temperaturaMinima;
     weatherApp.clone.querySelector(".tempMax").innerHTML = temperaturaMaxima;
@@ -89,12 +90,19 @@
     document.body.appendChild(weatherApp.clone);
   }
 
-  // Geolocaliza tu ciudad
-  if (navigator.geolocation) {
-    //habría que ejecutar window.onload, pero con el closure, no hace falta
-    navigator.geolocation.getCurrentPosition(posicionEncontrada, errorGeolocalizando);
-  } else {
-    alert('Tu navegador no soporta Geolocation :(');
+  function onLoad() {
+    // Geolocaliza tu ciudad
+    if (navigator.geolocation) {
+      //habría que ejecutar window.onload, pero con el closure, no hace falta
+      navigator.geolocation.getCurrentPosition(posicionEncontrada, errorGeolocalizando);
+    } else {
+      alert('Tu navegador no soporta Geolocation :(');
+    }
   }
+
+  onLoad();
+
+
+
 
 })();
