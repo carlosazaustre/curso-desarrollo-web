@@ -11,6 +11,7 @@
 
   // -- Variables --------------------------------------------------------------
 
+  var cities = [];
   var cityWeather = {};
   cityWeather.zone;
   cityWeather.icon;
@@ -25,9 +26,23 @@
   var timeNow = moment().locale('es').format('hh:mm:ss a');
   var dateNow = moment().locale('es').format('dddd[, ] D [de] MMMM [de] YYYY');
 
+  // -- Cacheado de elementos --------------------------------------------------
+
+  var $buttonAdd = $("#buttonAdd");
+  var $nombreNuevaCiudad = $("#nombreNuevaCiudad");
+
   // -- Funciones --------------------------------------------------------------
 
   function onLoad() {
+    // Eventos
+    $( $buttonAdd ).on('click', addNewCity);
+    $( $nombreNuevaCiudad).on('keypress', function(e) {
+      if(e.which == 13) {
+        addNewCity(e);
+      }
+    });
+
+    // Detecta la posición e inicia la aplicación
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(getCoords, errorFound);
     } else {
@@ -62,24 +77,53 @@
     cityWeather.description = data.weather[0].description;
     cityWeather.main        = data.weather[0].main;
 
-    renderTemplate();
+    renderTemplate(cityWeather);
   }
 
-  function renderTemplate() {
+  function renderTemplate(city) {
     // Activar el template
     var t = document.querySelector("#plantillaCiudad");
     var clone = document.importNode(t.content, true);
     // Pinta los datos
-    clone.querySelector(".nombreCiudad").innerHTML      = cityWeather.zone;
-    clone.querySelector(".weatherImagen").src           = cityWeather.icon;
-    clone.querySelector(".tempMin").innerHTML           = cityWeather.temp_max + "º C.";
-    clone.querySelector(".tempMax").innerHTML           = cityWeather.temp_min + "º C.";
-    clone.querySelector(".descripcionClima").innerHTML  = cityWeather.description;
-    clone.querySelector(".temperaturaHoy").innerHTML    = cityWeather.temp + "º C.";
+    clone.querySelector(".nombreCiudad").innerHTML      = city.zone;
+    clone.querySelector(".weatherImagen").src           = city.icon;
+    clone.querySelector(".tempMin").innerHTML           = city.temp_max + "º C.";
+    clone.querySelector(".tempMax").innerHTML           = city.temp_min + "º C.";
+    clone.querySelector(".descripcionClima").innerHTML  = city.description;
+    clone.querySelector(".temperaturaHoy").innerHTML    = city.temp + "º C.";
     clone.querySelector(".fechaSemana").innerHTML       = dateNow;
 
     $(".loader").hide();
     $("body").append(clone);
+  }
+
+  function addNewCity(e) {
+    e.preventDefault();
+    console.log( $( $nombreNuevaCiudad).val() );
+    $.getJSON(API_WEATHER_URL + "q=" + $( $nombreNuevaCiudad).val(), getWeatherNewCity);
+  }
+
+  function getWeatherNewCity(data) {
+    if(data.cod && data.cod == '404') {
+      alert("Error: No existe esa ciudad en la base de datos")
+    }
+
+    var newCity = {};
+
+    newCity.zone        = data.name;
+    newCity.icon        = IMG_WEATHER + data.weather[0].icon + ".png";
+    newCity.temp        = data.main.temp - 273.15;
+    newCity.temp_max    = data.main.temp_max - 273.15;
+    newCity.temp_min    = data.main.temp_min - 273.15;
+    newCity.sunrise     = data.sys.sunrise;
+    newCity.sunset      = data.sys.sunset;
+    newCity.description = data.weather[0].description;
+    newCity.main        = data.weather[0].main;
+
+    renderTemplate(newCity);
+
+    cities.push(newCity);
+    localStorage.setItem( 'cities', JSON.stringify(cities) );
   }
 
   // -- Inicia la aplicación ---------------------------------------------------
