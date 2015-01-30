@@ -22,6 +22,9 @@
   cityWeather.description;
   cityWeather.main;
 
+  var timeNow = moment().locale('es').format('hh:mm:ss a');
+  var dateNow = moment().locale('es').format('dddd[, ] D [de] MMMM [de] YYYY');
+
   // -- Funciones --------------------------------------------------------------
 
   function onLoad() {
@@ -30,6 +33,7 @@
     } else {
       alert("Tu navegador no soporta GeoLocation");
     }
+
   };
 
   function errorFound(error) {
@@ -63,15 +67,16 @@
 
   function renderTemplate() {
     // Activar el template
-    var t = document.querySelector("#plantilla");
+    var t = document.querySelector("#plantillaCiudad");
     var clone = document.importNode(t.content, true);
     // Pinta los datos
     clone.querySelector(".nombreCiudad").innerHTML      = cityWeather.zone;
     clone.querySelector(".weatherImagen").src           = cityWeather.icon;
-    clone.querySelector(".tempMin").innerHTML           = cityWeather.temp_max;
-    clone.querySelector(".tempMax").innerHTML           = cityWeather.temp_min;
+    clone.querySelector(".tempMin").innerHTML           = cityWeather.temp_max + "º C.";
+    clone.querySelector(".tempMax").innerHTML           = cityWeather.temp_min + "º C.";
     clone.querySelector(".descripcionClima").innerHTML  = cityWeather.description;
     clone.querySelector(".temperaturaHoy").innerHTML    = cityWeather.temp + "º C.";
+    clone.querySelector(".fechaSemana").innerHTML       = dateNow;
 
     $(".loader").hide();
     $("body").append(clone);

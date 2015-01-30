@@ -3,20 +3,25 @@
 <head>
   <meta charset="UTF-8">
   <title>Weather Project</title>
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css">
 </head>
 <body>
-  <span class="loader">Localizando tu posición...</span>
+  <span class="loader"><span class="fa fa-spinner fa-pulse"></span> Localizando tu posición...</span>
+  <button class="buttonAdd">Añadir nueva ciudad</button>
 
-  <template id="plantilla">
+  <template id="plantillaCiudad">
     <h3 class="nombreCiudad"></h3>
-    <div class="fechaSemana"></div>
-    <div class="temperaturaHoy"></div>
     <img src="" class="weatherImagen" />
-    <span class="tempMin"></span> | <span class="tempMax"></span>
-    <p class="descripcionClima"></p>
+    <ul>
+      <li class="fechaSemana"></li>
+      <li class="temperaturaHoy"></li>
+      <li><span class="tempMin"></span> | <span class="tempMax"></span></li>
+      <li class="descripcionClima"></li>
+    </ul>
   </template>
 
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.min.js"></script>
   <script src="js/index.js"></script>
 </body>
 </html>
