@@ -4,6 +4,8 @@
 
   // -- Constantes -------------------------------------------------------------
 
+  var API_GOOGLEMAPS = "https://maps.googleapis.com/maps/api/timezone/json?"; //location=39.6034810,-119.6822510&timestamp=1331161200"
+
   var API_KEY = "80114c7878f599621184a687fc500a12";
   var API_WEATHER_URL = "http://api.openweathermap.org/data/2.5/weather?APPID=" + API_KEY + "&";
   var API_FORECAST_URL = "http://api.openweathermap.org/data/2.5/forecast?APPID=" + API_KEY + "&";
@@ -23,8 +25,11 @@
   cityWeather.description;
   cityWeather.main;
 
-  var timeNow = moment().locale('es').format('hh:mm:ss a');
-  var dateNow = moment().locale('es').format('dddd[, ] D [de] MMMM [de] YYYY');
+  var today = new Date();
+  //var timeNow = moment().locale('es').format('hh:mm:ss a');
+  var timeNow = today.toLocaleTimeString();
+  //var dateNow = moment().locale('es').format('dddd[, ] D [de] MMMM [de] YYYY');
+  var dateNow = today.getDate() + "/" + today.getMonth()+1 + "/" + today.getFullYear();
 
   // -- Cacheado de elementos --------------------------------------------------
 
@@ -36,7 +41,7 @@
   function onLoad() {
     // Eventos
     $( $buttonAdd ).on('click', addNewCity);
-    $( $nombreNuevaCiudad).on('keypress', function(e) {
+    $( $nombreNuevaCiudad ).on('keypress', function(e) {
       if(e.which == 13) {
         addNewCity(e);
       }
@@ -67,6 +72,7 @@
   }
 
   function getCurrentWeather(data) {
+    console.log(data);
     cityWeather.zone        = data.name;
     cityWeather.icon        = IMG_WEATHER + data.weather[0].icon + ".png";
     cityWeather.temp        = data.main.temp - 273.15;
@@ -80,10 +86,11 @@
     renderTemplate(cityWeather);
   }
 
-  function renderTemplate(city) {
+  function renderTemplate(city, timezone) {
     // Activar el template
     var t = document.querySelector("#plantillaCiudad");
     var clone = document.importNode(t.content, true);
+
     // Pinta los datos
     clone.querySelector(".nombreCiudad").innerHTML      = city.zone;
     clone.querySelector(".weatherImagen").src           = city.icon;
@@ -92,6 +99,7 @@
     clone.querySelector(".descripcionClima").innerHTML  = city.description;
     clone.querySelector(".temperaturaHoy").innerHTML    = city.temp + "º C.";
     clone.querySelector(".fechaSemana").innerHTML       = dateNow;
+    clone.querySelector(".horaActual").innerHTML        = timeNow;
 
     $(".loader").hide();
     $("body").append(clone);
@@ -108,8 +116,12 @@
       alert("Error: No existe esa ciudad en la base de datos")
     }
 
-    var newCity = {};
+    console.log(data);
+    $.getJSON(API_GOOGLEMAPS + "location=" + data.coord.lat + "," + data.coord.lon + "&timestamp=1331161200", function(data) {
+      console.log(data.timeZoneId);
+    });
 
+    var newCity = {};
     newCity.zone        = data.name;
     newCity.icon        = IMG_WEATHER + data.weather[0].icon + ".png";
     newCity.temp        = data.main.temp - 273.15;
