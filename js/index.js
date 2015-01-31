@@ -4,8 +4,6 @@
 
   // -- Constantes -------------------------------------------------------------
 
-  var API_GOOGLEMAPS = "https://maps.googleapis.com/maps/api/timezone/json?"; //location=39.6034810,-119.6822510&timestamp=1331161200"
-
   var API_WORLDTIME_KEY = "d6a4075ceb419113c64885d9086d5";
   var API_WORLDTIME = "https://api.worldweatheronline.com/free/v2/tz.ashx?format=json&key="+ API_WORLDTIME_KEY +"&q=";
   var API_WEATHER_KEY = "80114c7878f599621184a687fc500a12";
