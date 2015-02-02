@@ -26,17 +26,16 @@
   cityWeather.main;
 
   var today = new Date();
-  //var timeNow = moment().locale('es').format('hh:mm:ss a');
   var timeNow = today.toLocaleTimeString().split(" ")[0];
-  //var dateNow = moment().locale('es').format('dddd[, ] D [de] MMMM [de] YYYY');
   var dateNow = today.getDate() + "/" + today.getMonth()+1 + "/" + today.getFullYear();
 
   // -- Cacheado de elementos --------------------------------------------------
 
-  var $body = $("body");
-  var $loader = $(".loader");
-  var $buttonAdd = $("#buttonAdd");
-  var $nombreNuevaCiudad = $("#nombreNuevaCiudad");
+  var $body               = $("body");
+  var $loader             = $(".loader");
+  var $buttonAdd          = $("#buttonAdd");
+  var $buttonLoad         = $("#buttonLoad");
+  var $nombreNuevaCiudad  = $("#nombreNuevaCiudad");
   var $formAddNuevaCiudad = $('#formAddNuevaCiudad');
 
   // -- Funciones --------------------------------------------------------------
@@ -50,6 +49,8 @@
         addNewCity(e);
       }
     });
+
+    $( $buttonLoad ).on('click', loadSavedCities);
 
     // Detecta la posición e inicia la aplicación
     if (navigator.geolocation) {
@@ -75,7 +76,6 @@
   }
 
   function getCurrentWeather(data) {
-    console.log(data);
     cityWeather.zone        = data.name;
     cityWeather.icon        = IMG_WEATHER + data.weather[0].icon + ".png";
     cityWeather.temp        = data.main.temp - 273.15;
@@ -118,7 +118,6 @@
 
   function addNewCity(e) {
     e.preventDefault();
-    console.log( $( $nombreNuevaCiudad).val() );
     $.getJSON(API_WEATHER_URL + "q=" + $( $nombreNuevaCiudad).val(), getWeatherNewCity);
   }
 
@@ -144,6 +143,16 @@
       cities.push(newCity);
       localStorage.setItem( 'cities', JSON.stringify(cities) );
     });
+  }
+
+  function loadSavedCities(e) {
+    e.preventDefault();
+    var cities = JSON.parse( localStorage.getItem('cities') );
+    cities.forEach(function(city) {
+      var cityLoad = city;
+      renderTemplate(cityLoad);
+    });
+
   }
 
   // -- Inicia la aplicación ---------------------------------------------------

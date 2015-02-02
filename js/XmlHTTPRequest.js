@@ -23,8 +23,10 @@ function loadXMLDoc() {
         alert('something else other than 200 was returned')
       }
     }
+
+    xmlhttp.open("GET", "http://api.wunderground.com/api/595a3b8f36177305/forecast/q/CA/San_Francisco.json", true);
+    xmlhttp.send();
   }
 
-  xmlhttp.open("GET", "http://api.wunderground.com/api/595a3b8f36177305/forecast/q/CA/San_Francisco.json", true);
-  xmlhttp.send();
+
 }
