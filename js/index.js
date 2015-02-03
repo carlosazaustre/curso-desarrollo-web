@@ -52,6 +52,7 @@
 
     $( $buttonLoad ).on('click', loadSavedCities);
 
+
     // Detecta la posición e inicia la aplicación
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(getCoords, errorFound);
@@ -64,7 +65,7 @@
     alert('Un error ocurrió: ' + error.code);
     // El código de error puede ser:
     // 0: Error desconocido
-    // 1: Permiso spodenegado
+    // 1: Permiso denegado
     // 2: Posición no disponible
     // 3: Timeout
   };
@@ -151,6 +152,12 @@
     cities.forEach(function(city) {
       var cityLoad = city;
       renderTemplate(cityLoad);
+    });
+
+    // Detecta eventos de click en cada ciudad
+    $(".ciudad").on("click", function(e) {
+      var i = $(".ciudad").index(this);
+      console.log(i);
     });
 
   }
