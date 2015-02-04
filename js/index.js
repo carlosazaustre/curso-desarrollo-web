@@ -107,10 +107,10 @@
     clone.querySelector(".fechaSemana").innerHTML       = dateNow;
     clone.querySelector(".nombreCiudad").innerHTML      = city.zone;
     clone.querySelector(".weatherImagen").src           = city.icon;
-    clone.querySelector(".tempMin").innerHTML           = city.temp_max.toFixed(1) + "º C.";
-    clone.querySelector(".tempMax").innerHTML           = city.temp_min.toFixed(1) + "º C.";
+    clone.querySelector(".tempMin").innerHTML           = city.temp_max.toFixed(1);
+    clone.querySelector(".tempMax").innerHTML           = city.temp_min.toFixed(1);
     clone.querySelector(".descripcionClima").innerHTML  = city.description;
-    clone.querySelector(".temperaturaHoy").innerHTML    = city.temp.toFixed(1) + "º C.";
+    clone.querySelector(".temperaturaHoy").innerHTML    = city.temp.toFixed(1);
 
     $( $loader ).hide();
     $( $formAddNuevaCiudad ).show();
