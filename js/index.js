@@ -11,7 +11,7 @@
   var API_FORECAST_URL = "http://api.openweathermap.org/data/2.5/forecast?APPID=" + API_WEATHER_KEY + "&";
   var IMG_WEATHER = "http://openweathermap.org/img/w/";
 
-  // -- Variables --------------------------------------------------------------
+  // -- Variables -----------------------fa-------------------------------------
 
   var cities = [];
   var cityWeather = {};
@@ -103,14 +103,14 @@
     }
 
     // Pinta los datos
-    clone.querySelector(".horaActual").innerHTML        = timeToShow;
-    clone.querySelector(".fechaSemana").innerHTML       = dateNow;
-    clone.querySelector(".nombreCiudad").innerHTML      = city.zone;
-    clone.querySelector(".weatherImagen").src           = city.icon;
-    clone.querySelector(".tempMin").innerHTML           = city.temp_max.toFixed(1);
-    clone.querySelector(".tempMax").innerHTML           = city.temp_min.toFixed(1);
-    clone.querySelector(".descripcionClima").innerHTML  = city.description;
-    clone.querySelector(".temperaturaHoy").innerHTML    = city.temp.toFixed(1);
+    clone.querySelector("[data-time]").innerHTML          = timeToShow;
+    clone.querySelector("[data-date]").innerHTML          = dateNow;
+    clone.querySelector("[data-city]").innerHTML          = city.zone;
+    clone.querySelector("[data-icon]").src                = city.icon;
+    clone.querySelector("[data-tempMax]").innerHTML       = city.temp_max.toFixed(1);
+    clone.querySelector("[data-tempMin]").innerHTML       = city.temp_min.toFixed(1);
+    clone.querySelector("[data-description]").innerHTML   = city.description;
+    clone.querySelector("[data-temp]").innerHTML          = city.temp.toFixed(1);
 
     $( $loader ).hide();
     $( $formAddNuevaCiudad ).show();
