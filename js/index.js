@@ -37,6 +37,7 @@
   var buttonAdd          = $("[data-button='add']");
   var buttonLoad         = $("[data-button='loadCities']");
   var nombreNuevaCiudad  = $("[data-input='cityAdd']");
+  var savedCities        = $("[data-saved-cities]");
 
   // -- Funciones --------------------------------------------------------------
 
@@ -50,8 +51,7 @@
       }
     });
 
-    $(buttonLoad).on('click', loadSavedCities);
-
+    $(savedCities).on('click', loadSavedCities);
 
     // Detecta la posición e inicia la aplicación
     if (navigator.geolocation) {
@@ -90,10 +90,14 @@
     renderTemplate(cityWeather, null);
   }
 
+  function activateTemplate(id) {
+    var t = document.querySelector(id);
+    return document.importNode(t.content, true);
+  }
+
+
   function renderTemplate(city, localTime) {
-    // Activar el template
-    var t = document.querySelector("#template--city");
-    var clone = document.importNode(t.content, true);
+    var clone = activateTemplate("#template--city");
     var timeToShow;
 
     if (localTime) {
@@ -104,7 +108,6 @@
 
     // Pinta los datos
     clone.querySelector("[data-time]").innerHTML            = timeToShow;
-    //clone.querySelector("[data-date]").innerHTML            = dateNow;
     clone.querySelector("[data-city]").innerHTML            = city.zone;
     clone.querySelector("[data-icon]").src                  = city.icon;
     clone.querySelector("[data-temp='max']").innerHTML      = city.temp_max.toFixed(1);
@@ -148,22 +151,48 @@
 
   function loadSavedCities(e) {
     e.preventDefault();
+
+    function renderCities(cities) {
+      cities.forEach(function(city) {
+        var cityLoad = city;
+        renderTemplate(cityLoad);
+      });
+    };
+
+    function removeItems() {
+      var citiesToDelete = $(".card");
+      if(citiesToDelete.length > 1) {
+        for(var i=1; i<citiesToDelete.length; i++) {
+          citiesToDelete[i].remove();
+        }
+      }
+    };
+
+    removeItems();
     var cities = JSON.parse( localStorage.getItem('cities') );
-    cities.forEach(function(city) {
-      var cityLoad = city;
-      renderTemplate(cityLoad);
-    });
+    renderCities(cities);
 
     // Detecta eventos de click en cada ciudad
     $(".card").on("click", function(e) {
-      var i = $(".ciudad").index(this);
-      console.log(i);
-    });
+      var i = $(".card").index(this);
+      var result = window.confirm("¿Deseas eliminar la ciudad salvada?");
 
+      // Elimina la ciudad de localStorage
+      if(result) {
+        var cards = $(".card");
+        cards[i].remove();
+      }
+      cities.splice(i, 1);
+      console.log(cities);
+      localStorage.setItem('cities', JSON.stringify(cities) );
+    });
   }
 
   // -- Inicia la aplicación ---------------------------------------------------
 
   onLoad();
+
+
+
 
 })();
