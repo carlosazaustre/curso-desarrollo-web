@@ -2,7 +2,7 @@ html {
     font-size: 150%;
 }
 body {
-    font-family: 'Ovo', serif;
+    font-family: 'Lato', serif;
     padding:0;
     margin:0;
 }
@@ -31,11 +31,8 @@ input[type="submit"] {
     border : none;
     font-weight: bold;
     cursor : pointer;
-    margin:0;
-    padding-top:   0;
-    padding-bottom:0;
-    padding-right:1em;
-    padding-left: 1em;
+    margin: 0;
+    padding: 1em;
     border-radius: 1px;
 }
 
@@ -79,13 +76,14 @@ input[type="submit"] {
     display: -moz-flex;
     display: -ms-flexbox;
     display: flex;
-    padding: .4em;
+    padding: 0;
+    font-size: 3rem;
 }
 
     .search__text {
         width: 100%;
+        font-size: 1rem;
     }
-
 
 
 /*
@@ -96,11 +94,12 @@ input[type="submit"] {
     position: relative;
     height: 30vh;
     width: 100vw;
+    background-color: #eaeaea;
     background-size: cover;
     background-position:center;
     color: white;
     text-shadow: 0 0 3px black;
-    font-family: 'Megrim', cursive;
+    font-family: 'Lato', cursive;
     padding: .4em;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
@@ -113,13 +112,13 @@ input[type="submit"] {
         margin:0;
         text-align: center;
     }
-    .card__date {
+    .card__time {
         font-size:.7rem;
         text-align: center;
         margin: 0;
     }
 
-    .card__date::after, .card__date::before {
+    .card__time::after, .card__time::before {
         content: " - ";
     }
 
@@ -131,19 +130,37 @@ input[type="submit"] {
         text-align: center;
     }
         .card__image {
-            display: block;
+          display: block;
         }
-        .card__maxt::before {
-            content: "max: ";
+        .card__maxt {
+          color: #37b948;
+          text-shadow: none;
         }
-        .card__mint::before {
-            content: "min: ";
+          .card__maxt::before {
+              content: "max: ";
+          }
+          .card__maxt::after {
+            content: "ºC"
+          }
+        .card__mint{
+          color: #bc2929;
+          text-shadow: none;
         }
+          .card__mint::before {
+              content: "min: ";
+          }
+          .card__mint::after {
+            content: "ºC"
+          }
         .card__temp {
             display: block;
             font-size: 3rem;
             line-height: 1;
         }
+          .card__temp::after {
+            content: " ºC";
+            font-size: 2rem;
+          }
 
 
     /*

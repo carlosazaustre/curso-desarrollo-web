@@ -31,26 +31,26 @@
 
   // -- Cacheado de elementos --------------------------------------------------
 
-  var $body               = $("body");
-  var $loader             = $(".loader");
-  var $buttonAdd          = $("#buttonAdd");
-  var $buttonLoad         = $("#buttonLoad");
-  var $nombreNuevaCiudad  = $("#nombreNuevaCiudad");
-  var $formAddNuevaCiudad = $('#formAddNuevaCiudad');
+  var $body              = $("body");
+  var loader             = $(".loader");
+  var buttonAdd          = $("[data-button='add']");
+  var buttonLoad         = $("[data-button='loadCities']");
+  var nombreNuevaCiudad  = $("[data-input='cityAdd']");
+  var formAddNuevaCiudad = $('.search');
 
   // -- Funciones --------------------------------------------------------------
 
   function onLoad() {
     // Eventos
-    $( $formAddNuevaCiudad ).hide();
-    $( $buttonAdd ).on('click', addNewCity);
-    $( $nombreNuevaCiudad ).on('keypress', function(e) {
+    $(formAddNuevaCiudad).hide();
+    $(buttonAdd).on('click', addNewCity);
+    $(nombreNuevaCiudad).on('keypress', function(e) {
       if(e.which == 13) {
         addNewCity(e);
       }
     });
 
-    $( $buttonLoad ).on('click', loadSavedCities);
+    $(buttonLoad).on('click', loadSavedCities);
 
 
     // Detecta la posición e inicia la aplicación
@@ -92,7 +92,7 @@
 
   function renderTemplate(city, localTime) {
     // Activar el template
-    var t = document.querySelector("#plantillaCiudad");
+    var t = document.querySelector("#template--city");
     var clone = document.importNode(t.content, true);
     var timeToShow;
 
@@ -103,18 +103,18 @@
     }
 
     // Pinta los datos
-    clone.querySelector("[data-time]").innerHTML          = timeToShow;
-    clone.querySelector("[data-date]").innerHTML          = dateNow;
-    clone.querySelector("[data-city]").innerHTML          = city.zone;
-    clone.querySelector("[data-icon]").src                = city.icon;
-    clone.querySelector("[data-tempMax]").innerHTML       = city.temp_max.toFixed(1);
-    clone.querySelector("[data-tempMin]").innerHTML       = city.temp_min.toFixed(1);
-    clone.querySelector("[data-description]").innerHTML   = city.description;
-    clone.querySelector("[data-temp]").innerHTML          = city.temp.toFixed(1);
+    clone.querySelector("[data-time]").innerHTML            = timeToShow;
+    //clone.querySelector("[data-date]").innerHTML            = dateNow;
+    clone.querySelector("[data-city]").innerHTML            = city.zone;
+    clone.querySelector("[data-icon]").src                  = city.icon;
+    clone.querySelector("[data-temp='max']").innerHTML      = city.temp_max.toFixed(1);
+    clone.querySelector("[data-temp='min']").innerHTML      = city.temp_min.toFixed(1);
+    //clone.querySelector("[data-description]").innerHTML     = city.description;
+    clone.querySelector("[data-temp='current']").innerHTML  = city.temp.toFixed(1);
 
-    $( $loader ).hide();
-    $( $formAddNuevaCiudad ).show();
-    $( $body ).append(clone);
+    $(loader).hide();
+    $(formAddNuevaCiudad).show();
+    $($body).append(clone);
   }
 
   function addNewCity(e) {
@@ -155,7 +155,7 @@
     });
 
     // Detecta eventos de click en cada ciudad
-    $(".ciudad").on("click", function(e) {
+    $(".card").on("click", function(e) {
       var i = $(".ciudad").index(this);
       console.log(i);
     });
