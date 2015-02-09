@@ -119,7 +119,7 @@
 
   function addNewCity(e) {
     e.preventDefault();
-    $.getJSON(API_WEATHER_URL + "q=" + $( $nombreNuevaCiudad).val(), getWeatherNewCity);
+    $.getJSON(API_WEATHER_URL + "q=" + $(nombreNuevaCiudad).val(), getWeatherNewCity);
   }
 
   function getWeatherNewCity(data) {
@@ -127,7 +127,7 @@
       alert("Error: No existe esa ciudad en la base de datos")
     }
 
-    $.getJSON(API_WORLDTIME + $( $nombreNuevaCiudad ).val(), function(response) {
+    $.getJSON(API_WORLDTIME + $(nombreNuevaCiudad).val(), function(response) {
       var newCity = {};
       newCity.zone        = data.name;
       newCity.icon        = IMG_WEATHER + data.weather[0].icon + ".png";
