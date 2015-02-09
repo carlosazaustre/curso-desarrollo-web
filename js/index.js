@@ -33,10 +33,10 @@
 
   var $body              = $("body");
   var loader             = $(".loader");
+  var formAddNuevaCiudad = $('.search');
   var buttonAdd          = $("[data-button='add']");
   var buttonLoad         = $("[data-button='loadCities']");
   var nombreNuevaCiudad  = $("[data-input='cityAdd']");
-  var formAddNuevaCiudad = $('.search');
 
   // -- Funciones --------------------------------------------------------------
 
