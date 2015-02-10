@@ -176,3 +176,11 @@ input[type="submit"] {
     .card--mountainview {
         background-image:url(../img/mv.jpg);
     }
+
+/*
+ * Loader
+ */
+ .loader {
+   text-align: center;
+   padding: 1em;
+ }
