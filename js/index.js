@@ -32,6 +32,7 @@
   // -- Cacheado de elementos --------------------------------------------------
 
   var $body              = $("body");
+  var $cards              = $("#cards");
   var loader             = $(".loader");
   var formAddNuevaCiudad = $('.search');
   var buttonAdd          = $("[data-button='add']");
@@ -96,7 +97,7 @@
   }
 
 
-  function renderTemplate(city, localTime) {
+  function renderTemplate(city, localTime, $parent, index) {
     var clone = activateTemplate("#template--city");
     var timeToShow;
 
@@ -107,6 +108,7 @@
     }
 
     // Pinta los datos
+    clone.querySelector(".card").dataset.element            = index;
     clone.querySelector("[data-time]").innerHTML            = timeToShow;
     clone.querySelector("[data-city]").innerHTML            = city.zone;
     clone.querySelector("[data-icon]").src                  = city.icon;
@@ -117,7 +119,11 @@
 
     $(loader).hide();
     $(formAddNuevaCiudad).show();
-    $($body).append(clone);
+    if($parent){
+      $parent.prepend(clone);
+    }else{
+      $($body).append(clone);
+    }
   }
 
   function addNewCity(e) {
@@ -142,7 +148,7 @@
       newCity.description = data.weather[0].description;
       newCity.main        = data.weather[0].main;
 
-      renderTemplate(newCity, response.data.time_zone[0].localtime);
+      renderTemplate(newCity, response.data.time_zone[0].localtime, $cards);
 
       cities.push(newCity);
       localStorage.setItem( 'cities', JSON.stringify(cities) );
@@ -153,19 +159,23 @@
     e.preventDefault();
 
     function renderCities(cities) {
-      cities.forEach(function(city) {
+      $.each(cities, function(i, city){
+
         var cityLoad = city;
-        renderTemplate(cityLoad);
+        renderTemplate(cityLoad, null, $cards, i);
       });
+      // cities.forEach(function(city) {
+      // });
     };
 
     function removeItems() {
-      var citiesToDelete = $(".card");
-      if(citiesToDelete.length > 1) {
-        for(var i=1; i<citiesToDelete.length; i++) {
-          citiesToDelete[i].remove();
-        }
-      }
+      $cards.empty();
+      // var citiesToDelete = $(".card");
+      // if(citiesToDelete.length > 1) {
+      //   for(var i=1; i<citiesToDelete.length; i++) {
+      //     citiesToDelete[i].remove();
+      //   }
+      // }
     };
 
     removeItems();
@@ -179,12 +189,15 @@
 
       // Elimina la ciudad de localStorage
       if(result) {
-        var cards = $(".card");
-        cards[i].remove();
+        // var cards = $(".card");
+        // cards[i].remove();
+        cities.splice(this.dataset.element, 1);
+        localStorage.setItem('cities', JSON.stringify(cities) );
+        removeItems();
+        renderCities(cities);
       }
-      cities.splice(i, 1);
-      console.log(cities);
-      localStorage.setItem('cities', JSON.stringify(cities) );
+      // console.log(cities);
+
     });
   }
 
