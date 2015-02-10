@@ -112,7 +112,6 @@
     clone.querySelector("[data-icon]").src                  = city.icon;
     clone.querySelector("[data-temp='max']").innerHTML      = city.temp_max.toFixed(1);
     clone.querySelector("[data-temp='min']").innerHTML      = city.temp_min.toFixed(1);
-    //clone.querySelector("[data-description]").innerHTML     = city.description;
     clone.querySelector("[data-temp='current']").innerHTML  = city.temp.toFixed(1);
 
     $(loader).hide();
@@ -131,6 +130,9 @@
     }
 
     $.getJSON(API_WORLDTIME + $(nombreNuevaCiudad).val(), function(response) {
+
+      $(nombreNuevaCiudad).val("");
+
       var newCity = {};
       newCity.zone        = data.name;
       newCity.icon        = IMG_WEATHER + data.weather[0].icon + ".png";

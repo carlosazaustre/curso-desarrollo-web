@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Time Weather</title>
+  <title>Platzi Weather</title>
   <link rel="stylesheet" href="css/style.css">
   <link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
 </head>
@@ -14,6 +14,7 @@
 <form action="" class="search">
   <input type="text" data-input="cityAdd" class="search__text" placeholder="Agregar una nueva cuidad">
   <input type="submit" data-button="add" class="search__btn btn" value="Añadir Ciudad" >
+  <button data-saved-cities class="search__btn btn">Ver ciudades guardadas</button>
 </form>
 
 <main class="cards-group">
@@ -28,19 +29,16 @@
         <span data-temp='max' class="card__maxt"></span>
         <span data-temp='min' class="card__mint"></span>
         <span data-temp='current' class="card__temp"></span>
-        <!--<p data-description>Bla bla bla</p>-->
       </div>
     </div>
   </template>
-
-  <span><a data-saved-cities href="#">Ver otras ciudades guardadas</a></span>
 
 </main>
 <section id="cards"></section>
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.3.0/moment-timezone.min.js"></script>
+<!--<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js"></script>-->
+<!--<script src="//cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.3.0/moment-timezone.min.js"></script>-->
 <script src="js/index.js"></script>
 
 </body>
