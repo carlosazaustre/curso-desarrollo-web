@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Platzi Weather</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+</head>
+<body>
+<header class="main-header">
+  <h1>PlatziWeather</h1>
+  <h2>An awesome way to see how we burn by global warming</h2>
+</header>
+<form action="" class="search">
+  <input type="text" class="search__text" placeholder="Agregar una nueva cuidad">
+  <input type="submit" class="search__btn btn" value="Añadir Ciudad" >
+</form>
+
+<main class="cards-group">
+  <template id="template--city">
+    <div class="card">
+      <header class="card__header">
+        <h3 class="card__title"></h3>
+        <h4 class="card__time"></h4>
+      </header>
+      <div class="card__info">
+        <img src="" class="card__image">
+        <span class="card__maxt"></span>
+        <span class="card__mint"></span>
+        <span class="card__temp"></span>
+      </div>
+    </div>
+  </template>
+
+</main>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.3.0/moment-timezone.min.js"></script>
+<script src="js/index.js"></script>
+
+</body>
+</html>
